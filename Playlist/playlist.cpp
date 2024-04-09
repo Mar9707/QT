@@ -1,3 +1,4 @@
+/*
 #include "playlist.h"
 #include "qpushbutton.h"
 
@@ -45,7 +46,7 @@ void Playlist::init_song(qint64 i) {
 
     if (i >= ind){
         i = 0;
-    }*/
+    }
     cursong = plist[i];
     curindex = i;
 
@@ -72,3 +73,4 @@ QString Playlist::getCurrentSong(){
 Playlist::~Playlist(){
     delete lay;
 }
+*/

@@ -2,9 +2,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    //, ui(new Ui::MainWindow)
 {
-    //ui->setupUi(this);
     this->resize(900, 600);
     play = new QPushButton("Play", this);
     stop = new QPushButton("Stop", this);
@@ -21,7 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
     player->play();
     next = new QPushButton(">>", this);
     prev = new QPushButton("<<", this);
-    playlist = new Playlist(this);
+    //playlist = new Playlist(this);
+    list = new Play(this);
+
 
     QString path = "/home/mariam/Downloads/1.mp3";
     QStringList l = path.split("/");
@@ -40,24 +40,36 @@ MainWindow::MainWindow(QWidget *parent)
     connect(open, &QPushButton::clicked, this, &MainWindow::openFile);
     connect(next, &QPushButton::clicked, this, &MainWindow::handle_next);
     connect(prev, &QPushButton::clicked, this, &MainWindow::handle_prev);
-    connect(playlist, &Playlist::songIsReady, this, &MainWindow::handleSongReady);
+    //connect(playlist, &Playlist::songIsReady, this, &MainWindow::handleSongReady);
+    connect(list, &QListWidget::currentRowChanged, this, &MainWindow::handleCurrentChanged);
 }
 
 
 
 void MainWindow::handle_next(){
-    playlist->set_next();
+    //playlist->set_next();
+    list->set_next();
 }
 
 void MainWindow::handle_prev(){
-    playlist->set_prev();
+    //playlist->set_prev();
+    list->set_prev();
 }
 
-void MainWindow::handleSongReady(){
+/*void MainWindow::handleSongReady(){
     player->setSource(playlist->getCurrentSong());
     QStringList l = playlist->getCurrentSong().split("/");
     name->setText(l[l.length()-1]);
+}*/
+
+
+
+void MainWindow::handleCurrentChanged(qint64 curr){
+    player->setSource(QUrl(list->cursong()));
+    QStringList l = list->cursong().split("/");
+    name->setText(l[l.length()-1]);
 }
+
 
 void MainWindow::handleVolume() {
     out->setVolume(volume->value()/100.0);
@@ -73,7 +85,8 @@ void MainWindow::openFile() {
     name->setText(l[l.length()-1]);*/
 
     QStringList songs=QFileDialog::getOpenFileNames(this, tr("Open Audio File"), QDir::homePath(), tr("Audio Files (*.mp3 *.wav *.ogg)"));
-    playlist->append_songs(songs);
+   // playlist->append_songs(songs);
+    list->append_songs(songs);
 }
 
 
@@ -135,6 +148,7 @@ void MainWindow::resizeEvent(QResizeEvent* e) {
     int name_h = percent(h, 10);
     name->setGeometry(percent(w, 35), percent(h, 5), percent(w, 35), name_h);
     name->setStyleSheet("background: MediumPurple");
+    name->setAlignment(Qt::AlignCenter);
 
     int open_h = percent(h, 5);
     open->setGeometry(percent(w, 75), percent(h, 5), percent(w, 20), open_h);
@@ -151,10 +165,15 @@ void MainWindow::resizeEvent(QResizeEvent* e) {
     int sliderDur_h = percent(h, 5);
     time->setGeometry(percent(w, 85), percent(h, 20), percent(w, 10), sliderDur_h);
     time->setStyleSheet("background: MediumPurple");
+    time->setAlignment(Qt::AlignCenter);
 
-    int playlist_h = percent(h, 50);
-    playlist->setGeometry(percent(w, 5), percent(h, 40), percent(w, 90), playlist_h);
-    playlist->setStyleSheet("background: Plum");
+    //int playlist_h = percent(h, 50);
+    //playlist->setGeometry(percent(w, 5), percent(h, 40), percent(w, 90), playlist_h);
+    //playlist->setStyleSheet("background: Plum");
+
+    int list_h = percent(h, 50);
+    list->setGeometry(percent(w, 5), percent(h, 40), percent(w, 90), list_h);
+    list->setStyleSheet("background: Plum");
 
     int next_h = percent (h, 5);
     next->setGeometry(percent(w, 85), percent(h, 32.5), percent(w, 10), next_h);
@@ -183,7 +202,6 @@ void MainWindow::pauseSong() {
 
 MainWindow::~MainWindow()
 {
-   // delete ui;
     delete play;
     delete stop;
     delete open;
@@ -194,6 +212,7 @@ MainWindow::~MainWindow()
     delete player;
     delete next;
     delete prev;
-    delete playlist;
+    //delete playlist;
+    delete list;
     delete out;
 }

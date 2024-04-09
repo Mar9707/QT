@@ -11,10 +11,12 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    play.cpp \
     playlist.cpp
 
 HEADERS += \
     mainwindow.h \
+    play.h \
     playlist.h
 
 FORMS += \

@@ -8,7 +8,8 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QFileDialog>
-#include "playlist.h"
+//#include "playlist.h"
+#include "play.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -39,7 +40,8 @@ public slots:
     void openFile();
     void handle_next();
     void handle_prev();
-    void handleSongReady();
+    // void handleSongReady();
+    void handleCurrentChanged(qint64 curr);
 
 
 
@@ -59,7 +61,8 @@ private:
     bool lock = false;
     QPushButton *next;
     QPushButton *prev;
-    Playlist *playlist;
+    //Playlist *playlist;
+    Play *list;
 
 
 };

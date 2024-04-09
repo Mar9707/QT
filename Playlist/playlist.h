@@ -1,4 +1,4 @@
-#ifndef PLAYLIST_H
+/*#ifndef PLAYLIST_H
 #define PLAYLIST_H
 #include <QLabel>
 #include <QBoxLayout>
@@ -30,3 +30,4 @@ signals:
 };
 
 #endif // PLAYLIST_H
+*/
